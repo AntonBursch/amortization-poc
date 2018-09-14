@@ -1,0 +1,27 @@
+body {
+  background-color: #f1f1f1;
+  color: #339966;
+}
+nav {
+  background-color: white;
+}
+table {
+  border: 1px solid #339966;
+}
+tbody {
+  background-color: white;
+}
+a {
+  color: #339966 !important;
+}
+
+.ngx-datatable.material .datatable-header .datatable-header-cell {
+  color: #339966 !important;
+  font-weight: 700 !important;
+  font-size: .75rem !important;
+}
+
+.ngx-datatable.material .datatable-header  {
+  color: #339966;
+}
+

@@ -1,0 +1,187 @@
+<nav class="navbar navbar-light bg-faded">
+  <a class="navbar-brand" href="#" style="color:#339966;font-weight:bold">
+    <img src="../../assets/greentrucklogo.png" width="30" height="30" class="d-inline-block align-top" alt=""> Green Truck - Proof of Concept
+  </a>
+</nav>
+<div class="container mt-3" *ngIf="loan" style="max-width: 100%">
+  <div class="row">
+    <div class="col-3">
+      <label for="inputNADA">NADA</label>
+      <input id="inputNADA" name="inputNADA" [(ngModel)]="NADA" type="text" class="form-control" placeholder="Enter NADA" [disabled]="disabled">
+    </div>
+    <div class="col-3">
+      <label for="inputAnnualDepreciation">Annual Depreciation</label>
+      <input id="inputAnnualDepreciation" name="inputAnnualDepreciation" [(ngModel)]="loan.annual_depreciation_value" type="text"
+        class="form-control" placeholder="Enter Annual Depreciation" [disabled]="disabled">
+    </div>
+    <div class="col-3">
+      <label for="inputDownpaymentPercentage">Down Payment Percentage</label>
+      <input id="inputDownpaymentPercentage" name="inputDownpaymentPercentage" [(ngModel)]="down_payment_percentage" type="text"
+        class="form-control" placeholder="Enter down payment percentage" [disabled]="disabled">
+    </div>
+    <div class="col-3">
+      <label for="inputDownpayment">Down Payment</label>
+      <input id="inputDownpayment" name="inputDownpayment" [(ngModel)]="loan.down_payment" type="text" class="form-control" placeholder="Enter down payment"
+        disabled>
+    </div>
+  </div>
+</div>
+<div class="container mt-3" *ngIf="loan" style="max-width: 100%">
+  <div class="row">
+    <div class="col-4">
+      <label for="inputStartingBalance">Starting Balance</label>
+      <input id="inputStartingBalance" name="inputStartingBalance" [ngModel]="starting_balance" type="text" class="form-control"
+        placeholder="Enter starting balance" disabled>
+    </div>
+    <div class="col-4">
+      <label for="inputAnnualInterestRates">Annual Interest Rates</label>
+      <input id="inputAnnualInterestRates" name="inputAnnualInterestRates" [(ngModel)]="loan.annual_interest_rate" type="text"
+        class="form-control" placeholder="Enter annual interest rates" [disabled]="disabled">
+    </div>
+    <div class="col-4">
+      <label for="inputTerm">Term (in months)</label>
+      <input id="inputTerm" name="inputTerm" [(ngModel)]="loan.term" type="text" class="form-control" placeholder="Enter term in months" [disabled]="disabled">
+    </div>
+  </div>
+</div>
+<div class="container mt-3" *ngIf="loan" style="max-width: 100%">
+  <div class="row">
+    <div class="col-4">
+      <label for="inputMissedPaymentFee">Missed Payment Fee</label>
+      <input id="inputMissedPaymentFee" name="inputMissedPaymentFee" [(ngModel)]="loan.missed_payment_fee" type="text" class="form-control"
+        placeholder="Enter missed payment fee" [disabled]="disabled">
+    </div>
+    <div class="col-4">
+      <label for="inputPartialPaymentFee">Partial Payment Fee</label>
+      <input id="inputPartialPaymentFee" name="inputPartialPaymentFee" [(ngModel)]="loan.partial_payment_fee" type="text" class="form-control"
+        placeholder="Enter partial payment fee" [disabled]="disabled">
+    </div>
+    <div class="col-4">
+      <label for="inputOverPaymentFee">Over Payment Fee</label>
+      <input id="inputOverPaymentFee" name="inputOverPaymentFee" [(ngModel)]="loan.over_payment_fee" type="text" class="form-control"
+        placeholder="Enter over payment fee" [disabled]="disabled">
+    </div>
+  </div>
+</div>
+<div class="container mt-3" *ngIf="loan" style="max-width: 100%">
+  <div class="form-row">
+    <div class="col-12 text-right">
+      <button *ngIf="loan.payments.length === 0" class="btn btn-success" (click)="createPaymentSchedule()">
+        Create Payment Schedule
+      </button>
+      <button *ngIf="loan.payments.length > 0" class="btn btn-success" (click)="reset()">
+        Reset
+      </button>
+    </div>
+  </div>
+</div>
+<ngb-tabset *ngIf="currentPayment">
+  <ngb-tab id="paymentSchedule">
+    <ng-template ngbTabTitle>
+      <span>Payment Schedule</span>
+    </ng-template>
+    <ng-template #paymentSchedule ngbTabContent>
+      <div class="container mt-3" *ngIf="loan" style="max-width: 100%">
+        <div *ngIf="currentPayment" class="form-row">
+          <div class="col-2">
+            <input id="inputPaymentAmount" name="inputPaymentAmount" [(ngModel)]="paymentAmount" type="text" class="form-control" placeholder="Enter payment amount">
+          </div>
+          <div class="col-2">
+            <button class="btn btn-success" (click)="enterPayment()">Enter Payment</button>
+          </div>
+          <div class="col-2">
+            <input id="inputCurrentMonth" name="inputCurrentMonth" [value]="currentMonth | date:'yyyy-MM-dd'" type="date" class="form-control"
+              disabled>
+          </div>
+          <div class="col-2">
+            <button class="btn btn-success" (click)="processMonth()">Process Month</button>
+          </div>
+        </div>
+      </div>
+      <div class="container mt-3" *ngIf="loan" style="max-width: 100%;">
+        <table *ngIf="currentPayment" class="table table-hover table-bordered table-responsive" style="height:34vh;overflow-y:auto;font-size:12.5px;max-width: 100%;background-color:#e4e4e4">
+            <thead>
+                <tr style="color:#339966;border:1px solid #e4e4e4">
+                  <th width="3.14%">Id</th>
+                  <th width="7.14%">Due Date</th>
+                  <th width="7.14%">Payment Owed</th>
+                  <th width="7.14%">Payment Paid</th>
+                  <th width="7.14%">Principle Owed</th>
+                  <th width="7.14%">Principle Paid</th>
+                  <th width="7.14%">Interest Owed</th>
+                  <th width="7.14%">Interest Paid</th>
+                  <th width="7.14%">Penalty Owed</th>
+                  <th width="9.14%">Remaining Balance</th>
+                  <th width="9.14%">NADA Value</th>
+                  <th width="7.14%">Difference</th>
+                  <th width="7.14%">LTV</th>
+                  <th width="7.14%">Payment Status</th>
+                </tr>
+              </thead>
+          <tbody>
+            <tr *ngFor="let payment of loan.payments">
+              <td>
+                <label>{{payment.id}}</label>
+              </td>
+              <td>
+                <label>{{payment.payment_due_date|date}}</label>
+              </td>
+              <td>
+                <label>{{payment.payment_owed|currency}}</label>
+              </td>
+              <td>
+                <label>{{payment.payment_paid|currency}}</label>
+              </td>
+              <td>
+                <label>{{payment.principal_owed|currency}}</label>
+              </td>
+              <td>
+                <label>{{payment.principal_paid|currency}}</label>
+              </td>
+              <td>
+                <label>{{payment.interest_owed|currency}}</label>
+              </td>
+              <td>
+                <label>{{payment.interest_paid|currency}}</label>
+              </td>
+              <td>
+                <label>{{payment.penalty_owed|currency}}</label>
+              </td>
+              <td>
+                <label>{{payment.remaining_balance|currency}}</label>
+              </td>
+              <td>
+                <label>{{payment.nada_value|currency}}</label>
+              </td>
+              <td>
+                <label>{{payment.nada_value_difference|currency}}</label>
+              </td>
+              <td>
+                <label>{{payment.ltv|percent:'2.2-2'}}</label>
+              </td>
+              <td>
+                <label>{{payment.payment_status}}</label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-template>
+  </ngb-tab>
+    <ngb-tab id="BalanceNADAChart">
+        <ng-template ngbTabTitle>
+            <span>Balance vs. NADA</span>
+        </ng-template>
+        <ng-template #balanceNADAChart ngbTabContent>
+            <app-nada-balance-bar-chart [loan]="loan"></app-nada-balance-bar-chart>
+        </ng-template>
+    </ngb-tab>
+  <ngb-tab id="principalInterestChart">
+    <ng-template ngbTabTitle>
+      <span>Principal vs. Interest</span>
+    </ng-template>
+    <ng-template #principalInterestChart ngbTabContent>
+      <app-principle-interest-bar-chart [loan]="loan"></app-principle-interest-bar-chart>
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset>

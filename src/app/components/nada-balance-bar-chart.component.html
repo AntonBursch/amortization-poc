@@ -1,0 +1,17 @@
+<div *ngIf="loan" style="width: 100%; height: 40vh">
+  <ngx-charts-bar-vertical-2d
+          [scheme]="colorScheme"
+          [results]="chartSeries"
+          [gradient]="gradient"
+          [xAxis]="showXAxis"
+          [yAxis]="showYAxis"
+          [legend]="showLegend"
+          [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel"
+          [barPadding]="1"
+          [groupPadding]="2"
+          [yAxisTickFormatting]="yAxisFormat"
+          [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel">
+  </ngx-charts-bar-vertical-2d>
+</div>
